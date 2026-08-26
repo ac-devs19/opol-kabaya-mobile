@@ -1,0 +1,261 @@
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
+import { Text } from "@/components/ui/text";
+import {
+  Ambulance,
+  Copy,
+  Flame,
+  Hospital,
+  Phone,
+  Shield,
+  Zap,
+} from "lucide-react-native";
+import {
+  Alert,
+  Linking,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import * as Clipboard from "expo-clipboard";
+import { useTabBarScroll } from "@/hooks/useTabBarScroll";
+
+const hotlines = [
+  {
+    name: "PNP",
+    description: "Philippine National Police",
+    numbers: ["09358056370"],
+    icon: Shield,
+  },
+  {
+    name: "BFP",
+    description: "Bureau of Fire Protection",
+    numbers: ["09758429491"],
+    icon: Flame,
+  },
+  {
+    name: "DRRMO",
+    description: "Disaster Risk Reduction & Management",
+    numbers: ["09670610573"],
+    icon: Shield,
+  },
+  {
+    name: "PCF",
+    description: "Ambulance / Emergency Medical",
+    numbers: ["09658995309"],
+    icon: Ambulance,
+  },
+  {
+    name: "MORESCO 1",
+    description: "Electric Power Emergency",
+    numbers: ["09177948314", "09498892047"],
+    icon: Zap,
+  },
+];
+
+export default function Emergency() {
+  const { handleScroll } = useTabBarScroll();
+
+  const handleCall = async (phoneNumber: string) => {
+    const formattedNumber = phoneNumber.replace(/\s+/g, "");
+    const url = `tel:${formattedNumber}`;
+
+    try {
+      const supported = await Linking.canOpenURL(url);
+
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert(
+          "Unable to Call",
+          "Calling is not supported on this device.",
+        );
+      }
+    } catch {
+      Alert.alert(
+        "Unable to Call",
+        "An error occurred while trying to make the call.",
+      );
+    }
+  };
+
+  const handleCopy = async (phoneNumber: string) => {
+    await Clipboard.setStringAsync(phoneNumber);
+
+    Alert.alert(
+      "Number Copied",
+      `${phoneNumber} has been copied to your clipboard.`,
+    );
+  };
+
+  return (
+    <SafeAreaView
+      edges={Platform.OS === "ios" ? ["top"] : ["top", "bottom"]}
+      className="flex-1 bg-background"
+    >
+      <ScrollView
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 32 }}
+      >
+        {/* Header */}
+        <View className="px-5 pt-5 pb-6">
+          <View>
+            <Text className="font-quicksand-bold text-2xl">Emergency</Text>
+
+            <Text className="mt-1 font-quicksand-medium text-sm text-muted-foreground">
+              Quick access to emergency hotlines
+            </Text>
+          </View>
+        </View>
+
+        {/* Emergency Notice */}
+        <View className="mx-5 mb-6 overflow-hidden rounded-3xl bg-destructive">
+          <View className="flex-row items-center p-5">
+            <View className="mr-4 size-12 items-center justify-center rounded-full bg-white/15">
+              <Icon
+                as={Phone}
+                size={23}
+                strokeWidth={2}
+                className="text-white"
+              />
+            </View>
+
+            <View className="flex-1">
+              <Text className="font-quicksand-bold text-base text-white">
+                Need immediate help?
+              </Text>
+
+              <Text className="mt-1 font-quicksand-medium text-xs leading-5 text-white/80">
+                Contact the appropriate emergency service below.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Section Header */}
+        <View className="mb-3 px-5">
+          <Text className="font-quicksand-bold text-lg">Contacts</Text>
+
+          <Text className="mt-1 font-quicksand-medium text-xs text-muted-foreground">
+            Tap Call Now to contact a service
+          </Text>
+        </View>
+
+        {/* Hotline List */}
+        <View className="px-5">
+          {hotlines.map((hotline, hotlineIndex) => {
+            const HotlineIcon = hotline.icon;
+
+            return (
+              <View
+                key={hotline.name}
+                className={`mb-4 overflow-hidden rounded-3xl border border-border bg-card ${
+                  hotlineIndex === hotlines.length - 1 ? "mb-0" : ""
+                }`}
+              >
+                {/* Agency Header */}
+                <View className="flex-row items-center px-4 pt-4">
+                  <View className="size-11 items-center justify-center rounded-2xl bg-primary/10">
+                    <Icon
+                      as={HotlineIcon}
+                      size={21}
+                      strokeWidth={2}
+                      className="text-primary"
+                    />
+                  </View>
+
+                  <View className="ml-3 flex-1">
+                    <Text className="font-quicksand-bold text-base">
+                      {hotline.name}
+                    </Text>
+
+                    <Text className="mt-0.5 font-quicksand-medium text-xs text-muted-foreground">
+                      {hotline.description}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Phone Numbers */}
+                <View className="px-4 pb-4 pt-4">
+                  {hotline.numbers.map((number, numberIndex) => (
+                    <View
+                      key={number}
+                      className={
+                        numberIndex > 0
+                          ? "mt-3 border-t border-border pt-3"
+                          : ""
+                      }
+                    >
+                      <View className="flex-row items-center">
+                        <View className="flex-1">
+                          <Text className="font-quicksand-bold text-lg tracking-wide">
+                            {number}
+                          </Text>
+
+                          <Text className="mt-0.5 font-quicksand-medium text-[11px] text-muted-foreground">
+                            Emergency hotline
+                          </Text>
+                        </View>
+
+                        {/* Copy */}
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => handleCopy(number)}
+                          className="mr-2 size-10 items-center justify-center rounded-full bg-secondary"
+                        >
+                          <Icon
+                            as={Copy}
+                            size={17}
+                            strokeWidth={1.8}
+                            className="text-foreground"
+                          />
+                        </TouchableOpacity>
+
+                        {/* Call */}
+                        <TouchableOpacity
+                          activeOpacity={0.8}
+                          onPress={() => handleCall(number)}
+                          className="h-10 flex-row items-center rounded-full bg-primary px-4"
+                        >
+                          <Icon
+                            as={Phone}
+                            size={16}
+                            strokeWidth={2}
+                            className="text-primary-foreground"
+                          />
+
+                          <Text className="ml-2 font-quicksand-bold text-xs text-primary-foreground">
+                            Call
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            );
+          })}
+        </View>
+
+        {/* Footer Notice */}
+        <View className="mx-5 mt-6 flex-row items-start rounded-2xl bg-secondary p-4">
+          <Icon
+            as={Phone}
+            size={17}
+            strokeWidth={1.8}
+            className="mt-0.5 text-muted-foreground"
+          />
+
+          <Text className="ml-3 flex-1 font-quicksand-medium text-xs leading-5 text-muted-foreground">
+            Use emergency numbers only when assistance is needed. Keep your
+            phone available for return calls from responders.
+          </Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
