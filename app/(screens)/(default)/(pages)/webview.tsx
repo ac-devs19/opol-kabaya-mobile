@@ -99,19 +99,7 @@ export default function WebViewScreen() {
       {/* Header */}
       <View className="px-5 pb-3 pt-2">
         <View className="flex-row items-center gap-3">
-          {/* Close */}
-          <Pressable
-            onPress={() => router.back()}
-            hitSlop={8}
-            className="size-11 items-center justify-center rounded-full bg-secondary active:opacity-70"
-          >
-            <Icon
-              as={X}
-              size={21}
-              strokeWidth={1.8}
-              className="text-foreground"
-            />
-          </Pressable>
+          <View className="size-11" />
 
           {/* Page information */}
           <View className="flex-1 items-center">
@@ -139,15 +127,15 @@ export default function WebViewScreen() {
             </View>
           </View>
 
-          {/* Refresh */}
+          {/* Close */}
           <Pressable
-            onPress={() => webViewRef.current?.reload()}
+            onPress={() => router.back()}
             hitSlop={8}
             className="size-11 items-center justify-center rounded-full bg-secondary active:opacity-70"
           >
             <Icon
-              as={RefreshCcw}
-              size={20}
+              as={X}
+              size={21}
               strokeWidth={1.8}
               className="text-foreground"
             />
@@ -207,40 +195,42 @@ export default function WebViewScreen() {
 
       {/* Browser toolbar */}
       <View className="px-5 pb-1 pt-3">
-        <View className="flex-row items-center justify-center gap-3">
-          {/* Back */}
-          <Pressable
-            disabled={!canGoBack}
-            onPress={() => webViewRef.current?.goBack()}
-            className="size-12 items-center justify-center rounded-full bg-secondary"
-            style={{
-              opacity: canGoBack ? 1 : 0.4,
-            }}
-          >
-            <Icon
-              as={ChevronLeft}
-              size={23}
-              strokeWidth={1.8}
-              className="text-foreground"
-            />
-          </Pressable>
+        <View className="flex-row items-center justify-between gap-3">
+          <View className="flex-row items-center gap-5">
+            {/* Back */}
+            <Pressable
+              disabled={!canGoBack}
+              onPress={() => webViewRef.current?.goBack()}
+              className="size-12 items-center justify-center rounded-full bg-secondary"
+              style={{
+                opacity: canGoBack ? 1 : 0.4,
+              }}
+            >
+              <Icon
+                as={ChevronLeft}
+                size={23}
+                strokeWidth={1.8}
+                className="text-foreground"
+              />
+            </Pressable>
 
-          {/* Forward */}
-          <Pressable
-            disabled={!canGoForward}
-            onPress={() => webViewRef.current?.goForward()}
-            className="size-12 items-center justify-center rounded-full bg-secondary"
-            style={{
-              opacity: canGoForward ? 1 : 0.4,
-            }}
-          >
-            <Icon
-              as={ChevronRight}
-              size={23}
-              strokeWidth={1.8}
-              className="text-foreground"
-            />
-          </Pressable>
+            {/* Forward */}
+            <Pressable
+              disabled={!canGoForward}
+              onPress={() => webViewRef.current?.goForward()}
+              className="size-12 items-center justify-center rounded-full bg-secondary"
+              style={{
+                opacity: canGoForward ? 1 : 0.4,
+              }}
+            >
+              <Icon
+                as={ChevronRight}
+                size={23}
+                strokeWidth={1.8}
+                className="text-foreground"
+              />
+            </Pressable>
+          </View>
 
           {/* Refresh */}
           <Pressable

@@ -173,46 +173,51 @@ export default function WebViewScreen() {
   }
 
   return (
-    <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-background">
+    <SafeAreaView
+      edges={Platform.OS === "ios" ? [] : ["bottom"]}
+      className="flex-1 bg-background"
+    >
       {/* ======================================================
           HEADER
       ======================================================= */}
 
-      <View className="flex-row items-center px-5 py-3">
-        <View className="flex-1 flex-row items-center">
-          {/* Document icon */}
+      {Platform.OS === "ios" ? (
+        <View className="flex-row items-center px-5 py-3">
+          <View className="flex-1 flex-row items-center">
+            {/* Document icon */}
 
-          <View className="mr-3 size-10 items-center justify-center rounded-xl bg-secondary">
-            <Icon
-              as={FileText}
-              size={19}
-              strokeWidth={1.6}
-              className="text-primary"
-            />
+            <View className="mr-3 size-10 items-center justify-center rounded-xl bg-secondary">
+              <Icon
+                as={FileText}
+                size={19}
+                strokeWidth={1.6}
+                className="text-primary"
+              />
+            </View>
+
+            {/* Document name */}
+
+            <View className="flex-1">
+              <Text numberOfLines={1} className="font-quicksand-bold text-sm">
+                {ordinance.pdf_name}
+              </Text>
+
+              <Text className="mt-0.5 font-quicksand-medium text-[10px] text-muted-foreground">
+                Ordinance document
+              </Text>
+            </View>
           </View>
 
-          {/* Document name */}
+          {/* Close */}
 
-          <View className="flex-1">
-            <Text numberOfLines={1} className="font-quicksand-bold text-sm">
-              {ordinance.pdf_name}
-            </Text>
-
-            <Text className="mt-0.5 font-quicksand-medium text-[10px] text-muted-foreground">
-              Ordinance document
-            </Text>
-          </View>
+          <Pressable
+            onPress={() => router.back()}
+            className="ml-3 size-11 items-center justify-center rounded-full bg-secondary active:opacity-70"
+          >
+            <Icon as={X} size={21} strokeWidth={1.7} />
+          </Pressable>
         </View>
-
-        {/* Close */}
-
-        <Pressable
-          onPress={() => router.back()}
-          className="ml-3 size-11 items-center justify-center rounded-full bg-secondary active:opacity-70"
-        >
-          <Icon as={X} size={21} strokeWidth={1.7} />
-        </Pressable>
-      </View>
+      ) : null}
 
       {/* ======================================================
           PDF VIEWER
