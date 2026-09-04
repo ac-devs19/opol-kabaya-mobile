@@ -1,20 +1,17 @@
 import { Button as Btn, ButtonProps } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { ActivityIndicator } from "react-native";
+import { cn } from "@/lib/utils";
 
 interface BtnProps extends ButtonProps {
   label: string;
-  loading?: boolean;
 }
 
-export default function Button({ label, loading, ...props }: BtnProps) {
+export default function Button({ label, className, ...props }: BtnProps) {
   return (
-    <Btn className="h-14 rounded-full" {...props}>
-      {loading ? (
-        <ActivityIndicator color="white" />
-      ) : (
-        <Text className="font-quicksand-bold text-base">{label}</Text>
-      )}
+    <Btn className={cn("h-14 rounded-full", className)} {...props}>
+      <Text className="font-quicksand-bold text-base tracking-wider">
+        {label}
+      </Text>
     </Btn>
   );
 }

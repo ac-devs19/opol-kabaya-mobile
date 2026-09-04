@@ -7,12 +7,14 @@ type MPinProps = {
   value: string;
   onChange: (value: string) => void;
   length?: number;
+  error?: string;
 };
 
 export default function MPin({
   value,
   onChange,
   length = 4,
+  error,
   ...props
 }: MPinProps) {
   const inputRef = useRef<TextInput>(null);
@@ -23,36 +25,43 @@ export default function MPin({
   };
 
   return (
-    <Pressable onPress={() => inputRef.current?.focus()}>
-      <TextInput
-        ref={inputRef}
-        value={value}
-        onChangeText={handleChange}
-        keyboardType="number-pad"
-        maxLength={length}
-        className="absolute opacity-0 w-0 h-0"
-        autoFocus
-        {...props}
-      />
-      <View className="w-full flex-row justify-between gap-3">
-        {Array.from({ length }).map((_, index) => {
-          const digit = value[index];
-          const isFocused = index === value.length;
-          return (
-            <View
-              key={index}
-              className={cn(
-                "bg-secondary/50 flex-1 h-14 items-center justify-center rounded-2xl border",
-                isFocused ? "border-primary" : "border-border",
-              )}
-            >
-              <Text className="text-xl font-quicksand-semibold">
-                {digit ? "•" : ""}
-              </Text>
-            </View>
-          );
-        })}
-      </View>
-    </Pressable>
+    <View className="gap-1">
+      <Pressable onPress={() => inputRef.current?.focus()}>
+        <TextInput
+          ref={inputRef}
+          value={value}
+          onChangeText={handleChange}
+          keyboardType="number-pad"
+          maxLength={length}
+          className="absolute opacity-0 w-0 h-0"
+          autoFocus
+          {...props}
+        />
+        <View className="w-full flex-row justify-between gap-3">
+          {Array.from({ length }).map((_, index) => {
+            const digit = value[index];
+            const isFocused = index === value.length;
+            return (
+              <View
+                key={index}
+                className={cn(
+                  "bg-secondary/50 flex-1 h-14 items-center justify-center rounded-2xl border",
+                  isFocused ? "border-primary" : "border-border",
+                )}
+              >
+                <Text className="text-xl font-quicksand-semibold">
+                  {digit ? "•" : ""}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
+      </Pressable>
+      {error && (
+        <Text className="text-xs font-quicksand-medium text-destructive ml-3">
+          {error}
+        </Text>
+      )}
+    </View>
   );
 }

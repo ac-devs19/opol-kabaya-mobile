@@ -217,7 +217,7 @@ export default function Home() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         flexGrow: 1,
-        paddingBottom: 40,
+        paddingBottom: 100,
       }}
       refreshControl={
         <RefreshControl

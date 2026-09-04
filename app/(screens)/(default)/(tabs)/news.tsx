@@ -145,7 +145,7 @@ export default function News() {
         onScroll={handleScroll}
         scrollEventThrottle={16}
         contentContainerStyle={{
-          paddingBottom: 32,
+          paddingBottom: 100,
         }}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={

@@ -99,7 +99,7 @@ export default function Emergency() {
         onScroll={handleScroll}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 32 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
         {/* Header */}
         <View className="px-5 pt-5 pb-6">

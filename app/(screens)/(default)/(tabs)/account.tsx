@@ -25,7 +25,7 @@ export default function Account() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: 40,
+          paddingBottom: 100,
         }}
       >
         <View className="px-5 pt-6">
