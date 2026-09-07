@@ -43,6 +43,7 @@ interface LinkSystem {
   icon: string;
   href: string;
   is_active: number;
+  is_open: number;
 }
 
 /*
@@ -433,7 +434,9 @@ export default function Home() {
                 >
                   <TouchableOpacity
                     onPress={() => {
-                      if (user?.is_verified !== 1) {
+                      const canAccess = item.is_open === 1 || user?.is_verified === 1;
+
+                      if (!canAccess) {
                         setOpen(true);
                         return;
                       }

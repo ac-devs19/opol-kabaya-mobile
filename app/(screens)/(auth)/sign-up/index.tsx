@@ -110,10 +110,10 @@ export default function SignUp() {
                 </View>
                 <View className="gap-2">
                   <View className="h-1 overflow-hidden rounded-full bg-secondary">
-                    <View className="h-full w-1/3 rounded-full bg-[#171717]" />
+                    <View className="h-full w-1/3 rounded-full bg-primary" />
                   </View>
                   <View className="flex-row justify-between">
-                    <View className="h-1 w-1 rounded-full bg-[#171717]" />
+                    <View className="h-1 w-1 rounded-full bg-primary" />
                     <View className="h-1 w-1 rounded-full bg-border" />
                     <View className="h-1 w-1 rounded-full bg-border" />
                   </View>
