@@ -2,7 +2,7 @@ import axiosClient from "axios";
 import { getToken } from "@/services/auth-storage";
 
 const axios = axiosClient.create({
-  baseURL: "https://calamari-unified-kinfolk.ngrok-free.dev/api/kabaya/mobile",
+  baseURL: "https://kabaya.opolmisor.com/api/kabaya/mobile",
   headers: {
     Accept: "application/json",
   },

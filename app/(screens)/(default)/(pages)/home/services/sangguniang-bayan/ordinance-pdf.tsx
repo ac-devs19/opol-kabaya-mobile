@@ -17,7 +17,6 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  Platform,
   Pressable,
   View,
 } from "react-native";
@@ -82,22 +81,16 @@ export default function OrdinancePdf() {
     router.push("/home/services/sangguniang-bayan/webview");
   };
 
-  /* ============================================================
-     LOADING
-  ============================================================ */
-
   if (isLoading) {
     return (
-      <SafeAreaView edges={["bottom"]} className="flex-1 bg-background">
+      <SafeAreaView className="flex-1 bg-background">
         <View className="flex-1 items-center justify-center">
           <View className="size-16 items-center justify-center rounded-full bg-secondary">
             <ActivityIndicator size="small" color={primary} />
           </View>
-
           <Text className="mt-4 font-quicksand-semibold text-sm">
             Loading documents...
           </Text>
-
           <Text className="mt-1 font-quicksand-medium text-xs text-muted-foreground">
             Please wait a moment
           </Text>
@@ -106,13 +99,9 @@ export default function OrdinancePdf() {
     );
   }
 
-  /* ============================================================
-     ERROR
-  ============================================================ */
-
   if (isError) {
     return (
-      <SafeAreaView edges={["bottom"]} className="flex-1 bg-background">
+      <SafeAreaView className="flex-1 bg-background">
         <View className="flex-1 items-center justify-center px-8">
           <View className="size-16 items-center justify-center rounded-full bg-secondary">
             <Icon
@@ -122,11 +111,9 @@ export default function OrdinancePdf() {
               className="text-muted-foreground"
             />
           </View>
-
           <Text className="mt-5 text-center font-quicksand-bold text-xl">
             Unable to load documents
           </Text>
-
           <Text className="mt-2 text-center font-quicksand-medium text-sm leading-5 text-muted-foreground">
             Something went wrong while loading this ordinance collection.
           </Text>
@@ -136,10 +123,7 @@ export default function OrdinancePdf() {
   }
 
   return (
-    <SafeAreaView
-      edges={Platform.OS === "ios" ? [] : ["bottom"]}
-      className="flex-1 bg-background"
-    >
+    <SafeAreaView edges={['bottom']} className="flex-1 bg-background">
       <FlatList
         data={pdf}
         keyExtractor={(item) => item.id}
@@ -150,37 +134,8 @@ export default function OrdinancePdf() {
         }}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={
-          <View className="bg-background px-5 pb-5 pt-5">
-            {/* ==================================================
-                CURRENT FOLDER
-            =================================================== */}
-
-            <View className="flex-row items-center">
-              <View className="size-12 items-center justify-center rounded-2xl bg-primary/10">
-                <Icon
-                  as={FolderOpen}
-                  size={23}
-                  strokeWidth={1.7}
-                  className="text-primary"
-                />
-              </View>
-
-              <View className="ml-3 flex-1">
-                <Text className="font-quicksand-bold text-xl">
-                  {ordinance.folder_name || "Ordinances"}
-                </Text>
-
-                <Text className="mt-0.5 font-quicksand-medium text-xs text-muted-foreground">
-                  Official ordinance documents
-                </Text>
-              </View>
-            </View>
-
-            {/* ==================================================
-                FOLDER INFO
-            =================================================== */}
-
-            <View className="mt-5 flex-row rounded-3xl bg-secondary p-4">
+          <View className="bg-background p-6">
+            <View className="flex-row rounded-3xl bg-secondary p-4">
               <View className="size-9 items-center justify-center rounded-full bg-background">
                 <Icon
                   as={FileText}
@@ -189,22 +144,15 @@ export default function OrdinancePdf() {
                   className="text-primary"
                 />
               </View>
-
               <View className="ml-3 flex-1">
                 <Text className="font-quicksand-semibold text-sm">
                   Ordinance Documents
                 </Text>
-
                 <Text className="mt-1 font-quicksand-medium text-xs leading-4 text-muted-foreground">
                   Select a document below to view the complete ordinance.
                 </Text>
               </View>
             </View>
-
-            {/* ==================================================
-                SEARCH
-            =================================================== */}
-
             <Pressable
               onPress={() =>
                 router.push(
@@ -231,11 +179,6 @@ export default function OrdinancePdf() {
                 </View>
               </View>
             </Pressable>
-
-            {/* ==================================================
-                SECTION HEADER
-            =================================================== */}
-
             {pdf.length > 0 && (
               <View className="mt-6 flex-row items-center justify-between px-1">
                 <Text className="font-quicksand-bold text-base">Documents</Text>
@@ -265,11 +208,9 @@ export default function OrdinancePdf() {
                 className="text-muted-foreground"
               />
             </View>
-
             <Text className="mt-5 text-center font-quicksand-bold text-xl">
               No documents available
             </Text>
-
             <Text className="mt-2 max-w-[280px] text-center font-quicksand-medium text-sm leading-5 text-muted-foreground">
               There are currently no ordinance documents in this collection.
             </Text>
@@ -281,10 +222,6 @@ export default function OrdinancePdf() {
             className="px-5 py-1.5 active:opacity-75"
           >
             <View className="flex-row items-center rounded-3xl border border-border bg-card p-4">
-              {/* ==================================================
-                  PDF ICON
-              =================================================== */}
-
               <View className="size-14 items-center justify-center rounded-2xl bg-destructive/10">
                 <Image
                   source={require("@/assets/images/icons/pdf.png")}
@@ -292,11 +229,6 @@ export default function OrdinancePdf() {
                   className="size-9"
                 />
               </View>
-
-              {/* ==================================================
-                  DOCUMENT INFO
-              =================================================== */}
-
               <View className="ml-4 flex-1">
                 <Text
                   numberOfLines={2}
@@ -304,7 +236,6 @@ export default function OrdinancePdf() {
                 >
                   {item.name}
                 </Text>
-
                 <View className="mt-1 flex-row items-center">
                   <Icon
                     as={FileText}
@@ -312,17 +243,11 @@ export default function OrdinancePdf() {
                     strokeWidth={1.7}
                     className="mr-1 text-muted-foreground"
                   />
-
                   <Text className="font-quicksand-medium text-[10px] text-muted-foreground">
                     PDF document
                   </Text>
                 </View>
               </View>
-
-              {/* ==================================================
-                  OPEN INDICATOR
-              =================================================== */}
-
               <View className="ml-2 size-8 items-center justify-center rounded-full bg-secondary">
                 <Icon
                   as={ChevronRight}

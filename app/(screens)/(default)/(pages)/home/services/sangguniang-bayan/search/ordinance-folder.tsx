@@ -82,10 +82,6 @@ export default function SearchOrdinanceFolder() {
     return data?.pages.flatMap((page) => page.files) ?? [];
   }, [data]);
 
-  /* ============================================================
-     SEARCH DEBOUNCE
-  ============================================================ */
-
   const debouncedSetSearch = useMemo(
     () =>
       debounce((value: string) => {
@@ -107,10 +103,6 @@ export default function SearchOrdinanceFolder() {
 
   const isTyping = search.trim() !== debouncedSearch;
 
-  /* ============================================================
-     OPEN FOLDER
-  ============================================================ */
-
   const handleOpenFolder = (item: DriveFile) => {
     setOrdinance({
       folder_id: item.id,
@@ -120,12 +112,7 @@ export default function SearchOrdinanceFolder() {
     router.replace("/home/services/sangguniang-bayan/ordinance-pdf");
   };
 
-  /* ============================================================
-     EMPTY / SEARCH STATE
-  ============================================================ */
-
   const renderEmptyState = () => {
-    // User has not typed anything yet
     if (!search.trim()) {
       return (
         <View className="items-center px-8 pt-16">
@@ -149,7 +136,6 @@ export default function SearchOrdinanceFolder() {
       );
     }
 
-    // User is still typing / waiting for debounce
     if (isTyping || (isLoading && folders.length === 0)) {
       return (
         <View className="items-center px-8 pt-16">
@@ -168,7 +154,6 @@ export default function SearchOrdinanceFolder() {
       );
     }
 
-    // Search completed but no results
     if (folders.length === 0) {
       return (
         <View className="items-center px-8 pt-16">
@@ -213,11 +198,7 @@ export default function SearchOrdinanceFolder() {
         }}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={
-          <View className="bg-background px-5 pb-4 pt-5">
-            {/* ==================================================
-                SEARCH HEADER
-            =================================================== */}
-
+          <View className="bg-background p-6">
             <View className="flex-row items-center">
               <View className="flex-1">
                 <View className="relative">
@@ -266,11 +247,6 @@ export default function SearchOrdinanceFolder() {
                 <Icon as={X} size={21} strokeWidth={1.7} />
               </Pressable>
             </View>
-
-            {/* ==================================================
-                SEARCH STATUS
-            =================================================== */}
-
             {search.trim().length > 0 && !isTyping && (
               <View className="mt-4 flex-row items-center justify-between px-1">
                 <View className="flex-row items-center">
@@ -314,10 +290,6 @@ export default function SearchOrdinanceFolder() {
             className="px-5 py-1.5 active:opacity-75"
           >
             <View className="flex-row items-center rounded-3xl border border-border bg-card p-4">
-              {/* ==================================================
-                  FOLDER ICON
-              =================================================== */}
-
               <View className="size-14 items-center justify-center rounded-2xl bg-primary/10">
                 <Image
                   source={require("@/assets/images/icons/folder.png")}
@@ -325,11 +297,6 @@ export default function SearchOrdinanceFolder() {
                   className="size-9"
                 />
               </View>
-
-              {/* ==================================================
-                  FOLDER INFO
-              =================================================== */}
-
               <View className="ml-4 flex-1">
                 <Text
                   numberOfLines={2}
@@ -351,11 +318,6 @@ export default function SearchOrdinanceFolder() {
                   </Text>
                 </View>
               </View>
-
-              {/* ==================================================
-                  ARROW
-              =================================================== */}
-
               <View className="ml-2 size-8 items-center justify-center rounded-full bg-secondary">
                 <Icon
                   as={ChevronRight}

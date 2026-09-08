@@ -10,6 +10,7 @@ import {
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Icon } from "@/components/ui/icon";
+import { BlurView } from "expo-blur";
 
 export default function TabBar({
   state,
@@ -33,7 +34,12 @@ export default function TabBar({
   return (
     <View className="absolute bottom-6 inset-x-6">
       <SafeAreaView edges={["bottom"]}>
-        <View className="bg-[#171717] dark:bg-white flex-row rounded-full p-2">
+        <BlurView
+          intensity={80}
+          tint="dark"
+          experimentalBlurMethod="dimezisBlurView"
+          className="flex-row rounded-full p-2 overflow-hidden border border-white/10"
+        >
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
 
@@ -70,27 +76,19 @@ export default function TabBar({
                 onLongPress={onLongPress}
                 className={cn(
                   "items-center justify-center w-1/4 gap-0.5",
-                  isFocused
-                    ? "bg-white/10 dark:bg-black/10 rounded-full p-1.5"
-                    : "",
+                  isFocused ? "bg-white/10 rounded-full p-1.5" : "",
                 )}
               >
                 <Icon
                   as={icons[route.name]}
                   size={21}
                   strokeWidth={1.5}
-                  className={
-                    isFocused
-                      ? "text-white dark:text-black"
-                      : "text-white/50 dark:text-black/50"
-                  }
+                  className={isFocused ? "text-white" : "text-white/50"}
                 />
                 <Text
                   className={cn(
                     "font-quicksand-medium text-[10px]",
-                    isFocused
-                      ? "text-white dark:text-black"
-                      : "text-white/50 dark:text-black/50",
+                    isFocused ? "text-white" : "text-white/50",
                   )}
                 >
                   {label}
@@ -98,7 +96,7 @@ export default function TabBar({
               </Pressable>
             );
           })}
-        </View>
+        </BlurView>
       </SafeAreaView>
     </View>
   );

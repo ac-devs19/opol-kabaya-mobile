@@ -81,10 +81,6 @@ export default function SangguniangBayan() {
     router.push("/home/services/sangguniang-bayan/ordinance-pdf");
   };
 
-  /* ============================================================
-     LOADING
-  ============================================================ */
-
   if (isLoading) {
     return (
       <SafeAreaView edges={["bottom"]} className="flex-1 bg-background">
@@ -92,11 +88,9 @@ export default function SangguniangBayan() {
           <View className="size-16 items-center justify-center rounded-full bg-secondary">
             <ActivityIndicator size="small" color={primary} />
           </View>
-
           <Text className="mt-4 font-quicksand-semibold text-sm">
             Loading ordinances...
           </Text>
-
           <Text className="mt-1 font-quicksand-medium text-xs text-muted-foreground">
             Please wait a moment
           </Text>
@@ -105,13 +99,9 @@ export default function SangguniangBayan() {
     );
   }
 
-  /* ============================================================
-     ERROR
-  ============================================================ */
-
   if (isError) {
     return (
-      <SafeAreaView edges={["bottom"]} className="flex-1 bg-background">
+      <SafeAreaView className="flex-1 bg-background">
         <View className="flex-1 items-center justify-center px-8">
           <View className="size-16 items-center justify-center rounded-full bg-secondary">
             <Icon
@@ -125,7 +115,6 @@ export default function SangguniangBayan() {
           <Text className="mt-5 text-center font-quicksand-bold text-xl">
             Unable to load ordinances
           </Text>
-
           <Text className="mt-2 text-center font-quicksand-medium text-sm leading-5 text-muted-foreground">
             Something went wrong while loading the Sangguniang Bayan documents.
           </Text>
@@ -135,10 +124,7 @@ export default function SangguniangBayan() {
   }
 
   return (
-    <SafeAreaView
-      edges={Platform.OS === "ios" ? [] : ["bottom"]}
-      className="flex-1 bg-background"
-    >
+    <SafeAreaView edges={['bottom']} className="flex-1 bg-background">
       <FlatList
         data={folders}
         keyExtractor={(item) => item.id}
@@ -149,38 +135,7 @@ export default function SangguniangBayan() {
         }}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={
-          <View className="bg-background px-5 pb-5 pt-5">
-            {/* ==================================================
-                HEADER
-            =================================================== */}
-
-            <View className="mb-5">
-              <View className="flex-row items-center">
-                <View className="size-12 items-center justify-center rounded-2xl bg-primary/10">
-                  <Icon
-                    as={FolderOpen}
-                    size={23}
-                    strokeWidth={1.7}
-                    className="text-primary"
-                  />
-                </View>
-
-                <View className="ml-3 flex-1">
-                  <Text className="font-quicksand-bold text-xl">
-                    Sangguniang Bayan
-                  </Text>
-
-                  <Text className="mt-0.5 font-quicksand-medium text-xs text-muted-foreground">
-                    Ordinances and official documents
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            {/* ==================================================
-                DESCRIPTION
-            =================================================== */}
-
+          <View className="bg-background p-6">
             <View className="mb-4 rounded-3xl bg-secondary p-4">
               <View className="flex-row">
                 <View className="size-9 items-center justify-center rounded-full bg-background">
@@ -191,12 +146,10 @@ export default function SangguniangBayan() {
                     className="text-primary"
                   />
                 </View>
-
                 <View className="ml-3 flex-1">
                   <Text className="font-quicksand-semibold text-sm">
                     Official Documents
                   </Text>
-
                   <Text className="mt-1 font-quicksand-medium text-xs leading-4 text-muted-foreground">
                     Browse ordinance collections and select a folder to view its
                     documents.
@@ -204,11 +157,6 @@ export default function SangguniangBayan() {
                 </View>
               </View>
             </View>
-
-            {/* ==================================================
-                SEARCH
-            =================================================== */}
-
             <Pressable
               onPress={() =>
                 router.push(
@@ -222,7 +170,6 @@ export default function SangguniangBayan() {
                     placeholder="Search ordinances..."
                     className="rounded-full px-11"
                   />
-
                   <View className="absolute left-4 top-0 h-full justify-center">
                     <Icon
                       as={Search}
@@ -234,17 +181,11 @@ export default function SangguniangBayan() {
                 </View>
               </View>
             </Pressable>
-
-            {/* ==================================================
-                SECTION TITLE
-            =================================================== */}
-
             {folders.length > 0 && (
               <View className="mt-6 flex-row items-center justify-between px-1">
                 <Text className="font-quicksand-bold text-base">
                   Ordinance Collections
                 </Text>
-
                 <View className="rounded-full bg-secondary px-3 py-1">
                   <Text className="font-quicksand-semibold text-[10px] text-muted-foreground">
                     {folders.length}{" "}
@@ -271,11 +212,9 @@ export default function SangguniangBayan() {
                 className="text-muted-foreground"
               />
             </View>
-
             <Text className="mt-5 text-center font-quicksand-bold text-xl">
               No folders available
             </Text>
-
             <Text className="mt-2 max-w-[280px] text-center font-quicksand-medium text-sm leading-5 text-muted-foreground">
               There are currently no ordinance collections available.
             </Text>
@@ -287,10 +226,6 @@ export default function SangguniangBayan() {
             className="px-5 py-1.5 active:opacity-75"
           >
             <View className="flex-row items-center rounded-3xl border border-border bg-card p-4">
-              {/* ==================================================
-                  FOLDER ICON
-              =================================================== */}
-
               <View className="size-14 items-center justify-center rounded-2xl bg-primary/10">
                 <Image
                   source={require("@/assets/images/icons/folder.png")}
@@ -298,11 +233,6 @@ export default function SangguniangBayan() {
                   className="size-9"
                 />
               </View>
-
-              {/* ==================================================
-                  FOLDER INFO
-              =================================================== */}
-
               <View className="ml-4 flex-1">
                 <Text
                   numberOfLines={2}
@@ -310,7 +240,6 @@ export default function SangguniangBayan() {
                 >
                   {item.name}
                 </Text>
-
                 <View className="mt-1 flex-row items-center">
                   <Icon
                     as={FileText}
@@ -318,17 +247,11 @@ export default function SangguniangBayan() {
                     strokeWidth={1.7}
                     className="mr-1 text-muted-foreground"
                   />
-
                   <Text className="font-quicksand-medium text-[10px] text-muted-foreground">
                     Ordinance documents
                   </Text>
                 </View>
               </View>
-
-              {/* ==================================================
-                  ARROW
-              =================================================== */}
-
               <View className="ml-2 size-8 items-center justify-center rounded-full bg-secondary">
                 <Icon
                   as={ChevronRight}
@@ -344,7 +267,6 @@ export default function SangguniangBayan() {
           isFetchingNextPage ? (
             <View className="items-center py-6">
               <ActivityIndicator size="small" color={primary} />
-
               <Text className="mt-2 font-quicksand-medium text-[10px] text-muted-foreground">
                 Loading more...
               </Text>

@@ -26,7 +26,6 @@ import { debounce } from "lodash";
 
 export default function SearchArticle() {
   const { primary } = useAppColors();
-
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -62,10 +61,6 @@ export default function SearchArticle() {
 
   const newsData = data?.pages.flatMap((page) => page.data) ?? [];
 
-  /* ============================================================
-     SEARCH DEBOUNCE
-  ============================================================ */
-
   const debouncedSetSearch = useMemo(
     () =>
       debounce((value: string) => {
@@ -93,10 +88,6 @@ export default function SearchArticle() {
   const isTyping = search !== debouncedSearch;
 
   const showLoading = isTyping || (isLoading && debouncedSearch.length > 0);
-
-  /* ============================================================
-     EMPTY STATE
-  ============================================================ */
 
   const EmptyState = () => {
     if (showLoading) {
@@ -181,13 +172,14 @@ export default function SearchArticle() {
   };
 
   return (
-    <SafeAreaView edges={["bottom"]} className="flex-1 bg-background">
+    <SafeAreaView className="flex-1">
       <FlatList
         data={newsData}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
+        stickyHeaderIndices={[0]}
         onEndReached={() => {
           if (hasNextPage && !isFetchingNextPage && !isFetching) {
             fetchNextPage();
@@ -195,32 +187,23 @@ export default function SearchArticle() {
         }}
         onEndReachedThreshold={0.5}
         ListHeaderComponent={
-          <View className="bg-background px-5 pb-4 pt-5">
-            {/* ==================================================
-                TOP BAR
-            =================================================== */}
+          <View className="bg-background p-6">
             <View className="flex-row items-center">
               <Button
                 onPress={() => router.back()}
                 variant="secondary"
                 size="icon"
-                className="mr-3 rounded-full"
+                className="mr-4 rounded-full"
               >
                 <Icon as={ArrowLeft} size={21} strokeWidth={1.7} />
               </Button>
-
               <View className="flex-1">
                 <Text className="font-quicksand-bold text-xl">Search News</Text>
-
                 <Text className="mt-0.5 font-quicksand-medium text-xs text-muted-foreground">
                   Find the latest OCC updates
                 </Text>
               </View>
             </View>
-
-            {/* ==================================================
-                SEARCH INPUT
-            =================================================== */}
             <View className="mt-5">
               <View className="relative">
                 <Input
@@ -231,8 +214,6 @@ export default function SearchArticle() {
                   className="rounded-full px-11 pr-12"
                   returnKeyType="search"
                 />
-
-                {/* Search icon */}
                 <View className="absolute left-4 top-0 h-full justify-center">
                   <Icon
                     as={Search}
@@ -241,8 +222,6 @@ export default function SearchArticle() {
                     className="text-muted-foreground"
                   />
                 </View>
-
-                {/* Clear */}
                 {search.length > 0 && (
                   <Pressable
                     onPress={clearSearch}
@@ -258,10 +237,6 @@ export default function SearchArticle() {
                 )}
               </View>
             </View>
-
-            {/* ==================================================
-                RESULT COUNT / SEARCH STATUS
-            =================================================== */}
             {debouncedSearch.length > 0 &&
               !showLoading &&
               newsData.length > 0 && (
@@ -294,10 +269,9 @@ export default function SearchArticle() {
           return (
             <Pressable
               onPress={() => router.replace(`/news/article/${item.id}`)}
-              className="px-5 py-2 active:opacity-80"
+              className="px-6 py-2 active:opacity-80"
             >
               <View className="flex-row overflow-hidden rounded-3xl border border-border bg-card p-3">
-                {/* Image */}
                 <Image
                   source={{
                     uri: `https://lh3.googleusercontent.com/d/${item.image}`,
@@ -305,8 +279,6 @@ export default function SearchArticle() {
                   resizeMode="cover"
                   className="h-[105px] w-[105px] rounded-2xl bg-secondary"
                 />
-
-                {/* Content */}
                 <View className="ml-3 flex-1 justify-between py-1">
                   <View>
                     <View className="mb-2 flex-row items-center">
@@ -316,12 +288,10 @@ export default function SearchArticle() {
                         strokeWidth={1.7}
                         className="mr-1.5 text-primary"
                       />
-
                       <Text className="font-quicksand-medium text-[10px] text-muted-foreground">
                         {formattedDate}
                       </Text>
                     </View>
-
                     <Text
                       numberOfLines={3}
                       className="font-quicksand-bold text-sm leading-5"
@@ -329,10 +299,6 @@ export default function SearchArticle() {
                       {item.title}
                     </Text>
                   </View>
-
-                  <Text className="font-quicksand-semibold text-[10px] text-primary">
-                    READ ARTICLE →
-                  </Text>
                 </View>
               </View>
             </Pressable>

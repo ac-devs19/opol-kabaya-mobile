@@ -11,18 +11,9 @@ import { useMutation } from "@tanstack/react-query";
 import MPin from "@/components/mpin";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
-import { Icon } from "@/components/ui/icon";
-import {
-  ArrowLeft,
-  Check,
-  KeyRound,
-  LockKeyhole,
-  ShieldCheck,
-} from "lucide-react-native";
 
 export default function ResetPin() {
   const { device_id, getUser } = useAuth();
-
   const [step, setStep] = useState<1 | 2>(1);
 
   const formSchema = z
@@ -55,10 +46,6 @@ export default function ResetPin() {
   const password = watch("password");
   const confirmation = watch("password_confirmation");
 
-  /* ============================================================
-     RESET PIN
-  ============================================================ */
-
   const resetPin = useMutation({
     mutationFn: async (data: FormSchema) => {
       await axios.post("/forgot/reset-pin", {
@@ -68,11 +55,9 @@ export default function ResetPin() {
 
       await getUser();
     },
-
     onSuccess: () => {
       router.replace("/login");
     },
-
     onError: (error: any) => {
       const serverErrors = error?.response?.data?.errors;
 
@@ -93,10 +78,6 @@ export default function ResetPin() {
     resetPin.mutate(data);
   };
 
-  /* ============================================================
-     STEP 1 → STEP 2
-  ============================================================ */
-
   useEffect(() => {
     if (step === 1 && password.length === 4) {
       setTimeout(() => {
@@ -105,29 +86,19 @@ export default function ResetPin() {
     }
   }, [password, step]);
 
-  /* ============================================================
-     STEP 2 AUTO SUBMIT
-  ============================================================ */
-
   useEffect(() => {
     if (step === 2 && confirmation.length === 4 && !resetPin.isPending) {
       handleSubmit(onSubmit)();
     }
   }, [confirmation, step]);
 
-  /* ============================================================
-     CHANGE PIN
-  ============================================================ */
-
-  const changePin = () => {
+  const handleReset = () => {
     setValue("password", "");
     setValue("password_confirmation", "");
     setStep(1);
   };
 
-  /* ============================================================
-     UI
-  ============================================================ */
+  const isCreating = resetPin.isPending;
 
   return (
     <KeyboardAwareScrollView
@@ -137,244 +108,78 @@ export default function ResetPin() {
         flexGrow: 1,
       }}
     >
-      <SafeAreaView
-        edges={["top", "bottom"]}
-        className="flex-1 bg-background px-6 pt-8 pb-7"
-      >
-        <View className="flex-1">
-          {/* ==================================================
-              HEADER
-          ================================================== */}
-
-          <View className="items-center">
-            <View className="size-16 items-center justify-center rounded-[22px] bg-primary/10">
-              <Icon
-                as={step === 1 ? LockKeyhole : Check}
-                size={30}
-                strokeWidth={1.7}
-                className="text-primary"
-              />
+      <SafeAreaView edges={["bottom"]} className="flex-1">
+        <View className="flex-1 p-6 gap-20">
+          <View className="flex-1 gap-12">
+            <View className="gap-6">
+              <View className="gap-3">
+                <View className="flex-row items-center justify-end">
+                  <Text className="font-quicksand-medium">3/3</Text>
+                </View>
+                <View className="gap-2">
+                  <View className="h-1 overflow-hidden rounded-full bg-secondary">
+                    <View className="h-full w-3/3 rounded-full bg-primary" />
+                  </View>
+                  <View className="flex-row justify-between">
+                    <View className="h-1 w-1 rounded-full bg-primary" />
+                    <View className="h-1 w-1 rounded-full bg-primary" />
+                    <View className="h-1 w-1 rounded-full bg-primary" />
+                  </View>
+                </View>
+              </View>
+              <View className="gap-3">
+                <Text className="font-quicksand-bold text-2xl">
+                  {step === 1 ? "Create a new PIN" : "Confirm your new PIN"}
+                </Text>
+                <Text className="font-quicksand-medium text-sm text-muted-foreground">
+                  {step === 1
+                    ? "Choose a 4-digit PIN that you can remember and keep secure."
+                    : "Enter your new PIN one more time to make sure it is correct."}
+                </Text>
+              </View>
             </View>
-
-            <Text className="mt-5 text-center font-quicksand-bold text-2xl">
-              {step === 1 ? "Create a new PIN" : "Confirm your new PIN"}
-            </Text>
-
-            <Text className="mt-2 max-w-[310px] text-center font-quicksand-medium text-sm leading-5 text-muted-foreground">
-              {step === 1
-                ? "Choose a 4-digit PIN that you can remember and keep secure."
-                : "Enter your new PIN one more time to make sure it is correct."}
-            </Text>
-          </View>
-
-          {/* ==================================================
-              PROGRESS
-          ================================================== */}
-
-          <View className="mt-8">
-            <View className="flex-row items-center">
-              <View
-                className={`size-7 items-center justify-center rounded-full ${
-                  step >= 1 ? "bg-primary" : "bg-secondary"
-                }`}
-              >
-                {step > 1 ? (
-                  <Icon
-                    as={Check}
-                    size={14}
-                    strokeWidth={2}
-                    className="text-primary-foreground"
+            {step === 1 ? (
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, value } }) => (
+                  <MPin
+                    onChange={onChange}
+                    value={value}
+                    error={errors.password?.message}
                   />
-                ) : (
-                  <Text className="font-quicksand-bold text-xs text-primary-foreground">
-                    1
-                  </Text>
                 )}
-              </View>
-
-              <View
-                className={`mx-2 h-px flex-1 ${
-                  step === 2 ? "bg-primary" : "bg-border"
-                }`}
               />
-
-              <View
-                className={`size-7 items-center justify-center rounded-full ${
-                  step === 2 ? "bg-primary" : "bg-secondary"
-                }`}
-              >
-                <Text
-                  className={`font-quicksand-bold text-xs ${
-                    step === 2
-                      ? "text-primary-foreground"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  2
+            ) : (
+              <Controller
+                control={control}
+                name="password_confirmation"
+                render={({ field: { onChange, value } }) => (
+                  <MPin
+                    onChange={onChange}
+                    value={value}
+                    error={errors.password_confirmation?.message}
+                  />
+                )}
+              />
+            )}
+            {isCreating && (
+              <View className="items-center">
+                <Text className="font-quicksand-medium text-xs text-muted-foreground">
+                  Creating your secure account...
                 </Text>
               </View>
-            </View>
-
-            <View className="mt-2 flex-row justify-between">
-              <Text className="font-quicksand-semibold text-[10px] text-primary">
-                {step === 1 ? "New PIN" : "Completed"}
-              </Text>
-
-              <Text
-                className={`font-quicksand-medium text-[10px] ${
-                  step === 2 ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                Confirm
-              </Text>
-            </View>
+            )}
           </View>
-
-          {/* ==================================================
-              PIN CARD
-          ================================================== */}
-
-          <View className="mt-10 rounded-[30px] border border-border bg-card p-6">
+          {step === 2 && !isCreating && (
             <View className="items-center">
-              <View className="mb-5 flex-row items-center rounded-full bg-secondary px-4 py-2">
-                <Icon
-                  as={KeyRound}
-                  size={14}
-                  strokeWidth={1.7}
-                  className="mr-2 text-primary"
-                />
-
-                <Text className="font-quicksand-semibold text-xs">
-                  {step === 1 ? "Enter new PIN" : "Confirm new PIN"}
+              <TouchableOpacity activeOpacity={0.7} onPress={handleReset}>
+                <Text className="font-quicksand-bold text-sm text-primary">
+                  Change PIN
                 </Text>
-              </View>
-
-              {/* PIN */}
-
-              {step === 1 ? (
-                <Controller
-                  control={control}
-                  name="password"
-                  render={({ field: { onChange, value } }) => (
-                    <View className="w-full">
-                      <MPin onChange={onChange} value={value} />
-                    </View>
-                  )}
-                />
-              ) : (
-                <Controller
-                  control={control}
-                  name="password_confirmation"
-                  render={({ field: { onChange, value } }) => (
-                    <View className="w-full">
-                      <MPin onChange={onChange} value={value} />
-
-                      {errors.password_confirmation && (
-                        <Text className="mt-4 text-center font-quicksand-medium text-xs text-destructive">
-                          {errors.password_confirmation.message}
-                        </Text>
-                      )}
-                    </View>
-                  )}
-                />
-              )}
-            </View>
-          </View>
-
-          {/* ==================================================
-              REQUIREMENT
-          ================================================== */}
-
-          {step === 1 && (
-            <View className="mt-5 flex-row items-center justify-center">
-              <View className="size-5 items-center justify-center rounded-full bg-primary/10">
-                <Icon
-                  as={Check}
-                  size={12}
-                  strokeWidth={2}
-                  className="text-primary"
-                />
-              </View>
-
-              <Text className="ml-2 font-quicksand-medium text-xs text-muted-foreground">
-                Your PIN must contain exactly 4 digits
-              </Text>
+              </TouchableOpacity>
             </View>
           )}
-
-          {/* ==================================================
-              PROCESSING
-          ================================================== */}
-
-          {resetPin.isPending && (
-            <View className="mt-5 items-center">
-              <Text className="font-quicksand-medium text-xs text-muted-foreground">
-                Securing your new PIN...
-              </Text>
-            </View>
-          )}
-
-          {/* ==================================================
-              SECURITY
-          ================================================== */}
-
-          <View className="mt-8 flex-row rounded-2xl bg-secondary p-4">
-            <Icon
-              as={ShieldCheck}
-              size={18}
-              strokeWidth={1.6}
-              className="mr-3 text-primary"
-            />
-
-            <Text className="flex-1 font-quicksand-medium text-xs leading-5 text-muted-foreground">
-              Keep your PIN private. Avoid using easily guessed numbers such as
-              your birthday or phone number.
-            </Text>
-          </View>
-        </View>
-
-        {/* ==================================================
-            CHANGE PIN
-        ================================================== */}
-
-        {step === 2 && !resetPin.isPending && (
-          <TouchableOpacity
-            onPress={changePin}
-            activeOpacity={0.7}
-            className="mt-6 items-center py-3"
-          >
-            <View className="flex-row items-center">
-              <Icon
-                as={ArrowLeft}
-                size={15}
-                strokeWidth={1.7}
-                className="mr-1.5 text-primary"
-              />
-
-              <Text className="font-quicksand-semibold text-sm text-primary">
-                Change PIN
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-
-        {/* ==================================================
-            FOOTER
-        ================================================== */}
-
-        <View className="items-center pt-3">
-          <View className="flex-row items-center">
-            <Icon
-              as={ShieldCheck}
-              size={15}
-              strokeWidth={1.6}
-              className="mr-1.5 text-muted-foreground"
-            />
-
-            <Text className="font-quicksand-medium text-xs text-muted-foreground">
-              Secure PIN recovery
-            </Text>
-          </View>
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>

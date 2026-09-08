@@ -76,10 +76,6 @@ export default function SearchOrdinancePdf() {
     return data?.pages.flatMap((page) => page.files) ?? [];
   }, [data]);
 
-  /* ============================================================
-     SEARCH DEBOUNCE
-  ============================================================ */
-
   const debouncedSetSearch = useMemo(
     () =>
       debounce((value: string) => {
@@ -101,19 +97,11 @@ export default function SearchOrdinancePdf() {
 
   const isTyping = search.trim() !== debouncedSearch;
 
-  /* ============================================================
-     CLEAR SEARCH
-  ============================================================ */
-
   const handleClearSearch = () => {
     setSearch("");
     setDebouncedSearch("");
     debouncedSetSearch.cancel();
   };
-
-  /* ============================================================
-     OPEN PDF
-  ============================================================ */
 
   const handleOpenPdf = (item: DriveFile) => {
     setOrdinance({
@@ -125,14 +113,7 @@ export default function SearchOrdinancePdf() {
     router.replace("/home/services/sangguniang-bayan/webview");
   };
 
-  /* ============================================================
-     EMPTY STATE
-  ============================================================ */
-
   const renderEmptyState = () => {
-    /*
-     * Nothing typed yet
-     */
     if (!search.trim()) {
       return (
         <View className="items-center px-8 pt-16">
@@ -144,11 +125,9 @@ export default function SearchOrdinancePdf() {
               className="text-muted-foreground"
             />
           </View>
-
           <Text className="mt-5 text-center font-quicksand-bold text-xl">
             Search documents
           </Text>
-
           <Text className="mt-2 max-w-[290px] text-center font-quicksand-medium text-sm leading-5 text-muted-foreground">
             Search for an ordinance document by entering its title above.
           </Text>
@@ -156,9 +135,6 @@ export default function SearchOrdinancePdf() {
       );
     }
 
-    /*
-     * User is typing / request is loading
-     */
     if (isTyping || (isLoading && pdf.length === 0)) {
       return (
         <View className="items-center px-8 pt-16">
@@ -177,9 +153,6 @@ export default function SearchOrdinancePdf() {
       );
     }
 
-    /*
-     * Search completed but no results
-     */
     if (pdf.length === 0) {
       return (
         <View className="items-center px-8 pt-16">
@@ -224,11 +197,7 @@ export default function SearchOrdinancePdf() {
         }}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={
-          <View className="bg-background px-5 pb-4 pt-5">
-            {/* ==================================================
-                SEARCH BAR
-            =================================================== */}
-
+          <View className="bg-background p-6">
             <View className="flex-row items-center">
               <View className="flex-1">
                 <View className="relative">
@@ -241,8 +210,6 @@ export default function SearchOrdinancePdf() {
                     className="rounded-full px-11"
                   />
 
-                  {/* Search icon */}
-
                   <View className="absolute left-4 top-0 h-full justify-center">
                     <Icon
                       as={Search}
@@ -251,9 +218,6 @@ export default function SearchOrdinancePdf() {
                       className="text-muted-foreground"
                     />
                   </View>
-
-                  {/* Clear search */}
-
                   {search.length > 0 && (
                     <Pressable
                       onPress={handleClearSearch}
@@ -269,9 +233,6 @@ export default function SearchOrdinancePdf() {
                   )}
                 </View>
               </View>
-
-              {/* Close search */}
-
               <Pressable
                 onPress={() => router.back()}
                 className="ml-3 size-11 items-center justify-center rounded-full bg-secondary active:opacity-70"
@@ -279,26 +240,6 @@ export default function SearchOrdinancePdf() {
                 <Icon as={X} size={21} strokeWidth={1.7} />
               </Pressable>
             </View>
-
-            {/* ==================================================
-                FOLDER CONTEXT
-            =================================================== */}
-
-            <View className="mt-4 px-1">
-              <Text
-                numberOfLines={1}
-                className="font-quicksand-medium text-xs text-muted-foreground"
-              >
-                Searching in{" "}
-                <Text className="font-quicksand-bold text-foreground">
-                  {ordinance.folder_name || "Ordinance Collection"}
-                </Text>
-              </Text>
-            </View>
-
-            {/* ==================================================
-                RESULTS STATUS
-            =================================================== */}
 
             {search.trim().length > 0 && !isTyping && (
               <View className="mt-4 flex-row items-center justify-between px-1">
@@ -343,10 +284,6 @@ export default function SearchOrdinancePdf() {
             className="px-5 py-1.5 active:opacity-75"
           >
             <View className="flex-row items-center rounded-3xl border border-border bg-card p-4">
-              {/* ==================================================
-                  PDF ICON
-              =================================================== */}
-
               <View className="size-14 items-center justify-center rounded-2xl bg-destructive/10">
                 <Image
                   source={require("@/assets/images/icons/pdf.png")}
@@ -354,11 +291,6 @@ export default function SearchOrdinancePdf() {
                   className="size-9"
                 />
               </View>
-
-              {/* ==================================================
-                  DOCUMENT INFO
-              =================================================== */}
-
               <View className="ml-4 flex-1">
                 <Text
                   numberOfLines={2}
@@ -380,11 +312,6 @@ export default function SearchOrdinancePdf() {
                   </Text>
                 </View>
               </View>
-
-              {/* ==================================================
-                  OPEN INDICATOR
-              =================================================== */}
-
               <View className="ml-2 size-8 items-center justify-center rounded-full bg-secondary">
                 <Icon
                   as={ChevronRight}

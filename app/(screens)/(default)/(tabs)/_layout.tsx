@@ -1,9 +1,8 @@
-import AppLogo from "@/components/app-logo";
 import TabBar from "@/components/tab-bar";
 import { Button as Btn } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
-import { router, Tabs } from "expo-router";
-import { Bell, LogOut } from "lucide-react-native";
+import { Tabs } from "expo-router";
+import { LogOut } from "lucide-react-native";
 import React, { useCallback, useMemo, useRef } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -71,26 +70,7 @@ export default function TabsLayout() {
       >
         <Tabs.Screen
           options={{
-            header: () => (
-              <SafeAreaView edges={["top"]}>
-                <View className="p-6 flex-row justify-between items-center">
-                  <AppLogo />
-                  <Btn
-                    onPress={() => router.push("/home/notification")}
-                    variant="secondary"
-                    size="icon"
-                    className="size-12 rounded-2xl bg-primary/10 items-center justify-center"
-                  >
-                    <Icon
-                      as={Bell}
-                      size={24}
-                      strokeWidth={1.8}
-                      className="text-primary"
-                    />
-                  </Btn>
-                </View>
-              </SafeAreaView>
-            ),
+            headerShown: false,
           }}
           name="home"
         />
@@ -109,14 +89,16 @@ export default function TabsLayout() {
         <Tabs.Screen
           options={{
             headerRight: () => (
-              <Btn
-                onPress={handleOpen}
-                variant="ghost"
-                size="icon"
-                className="rounded-full"
-              >
-                <Icon as={LogOut} size={24} strokeWidth={1.5} />
-              </Btn>
+              <View className="pr-4">
+                <Btn
+                  onPress={handleOpen}
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <Icon as={LogOut} size={24} strokeWidth={1.5} />
+                </Btn>
+              </View>
             ),
             headerTitle: "Account",
           }}
