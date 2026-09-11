@@ -100,7 +100,7 @@ export default function SignUp() {
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={{ flexGrow: 1 }}
     >
-      <SafeAreaView edges={["bottom"]} className="flex-1">
+      <SafeAreaView className="flex-1">
         <View className="flex-1 p-6 gap-20">
           <View className="flex-1 gap-12">
             <View className="gap-6">
@@ -224,39 +224,37 @@ export default function SignUp() {
               />
             </View>
           </View>
-          <View>
-            <View className="flex-1 justify-end gap-6">
-              <View className="gap-3">
-                <Text className="text-center font-quicksand-medium text-muted-foreground text-sm">
-                  By continuing, you agree to Kabaya's{" "}
-                  <Text className="font-quicksand-bold text-primary text-sm">
-                    Terms and Conditions
-                  </Text>{" "}
-                  and{" "}
-                  <Text className="font-quicksand-bold text-primary text-sm">
-                    Privacy Notice
-                  </Text>
-                  .
+          <View className="flex-1 justify-end gap-6">
+            <View className="gap-3">
+              <Text className="text-center font-quicksand-medium text-muted-foreground text-sm">
+                By continuing, you agree to Kabaya's{" "}
+                <Text className="font-quicksand-bold text-primary text-sm">
+                  Terms and Conditions
+                </Text>{" "}
+                and{" "}
+                <Text className="font-quicksand-bold text-primary text-sm">
+                  Privacy Notice
                 </Text>
-                <Button
-                  onPress={handleSubmit(onSubmit)}
-                  label="Continue"
-                  disabled={processing}
-                />
-              </View>
-              <View className="flex-row items-center">
-                <View className="h-px flex-1 bg-border" />
-                <Text className="mx-3 font-quicksand-medium text-[10px] tracking-wider uppercase text-muted-foreground">
-                  Already have an account?
-                </Text>
-                <View className="h-px flex-1 bg-border" />
-              </View>
+                .
+              </Text>
               <Button
-                onPress={() => router.replace("/sign-in")}
-                label="Sign in"
-                variant="secondary"
+                onPress={handleSubmit(onSubmit)}
+                label="Continue"
+                disabled={processing}
               />
             </View>
+            <View className="flex-row items-center">
+              <View className="h-px flex-1 bg-border" />
+              <Text className="mx-3 font-quicksand-medium text-[10px] tracking-wider uppercase text-muted-foreground">
+                Already have an account?
+              </Text>
+              <View className="h-px flex-1 bg-border" />
+            </View>
+            <Button
+              onPress={() => router.replace("/sign-in")}
+              label="Sign in"
+              variant="secondary"
+            />
           </View>
         </View>
       </SafeAreaView>

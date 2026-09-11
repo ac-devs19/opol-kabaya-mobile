@@ -33,6 +33,19 @@ export default function SignUpLayout() {
         headerShadowVisible: false,
         title: "",
       }}
-    />
+    >
+      <Stack.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="create-pin"
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack>
   );
 }

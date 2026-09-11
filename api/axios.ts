@@ -2,7 +2,7 @@ import axiosClient from "axios";
 import { getToken } from "@/services/auth-storage";
 
 const axios = axiosClient.create({
-  baseURL: "https://kabaya.opolmisor.com/api/kabaya/mobile",
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
   headers: {
     Accept: "application/json",
   },

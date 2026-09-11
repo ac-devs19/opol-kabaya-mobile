@@ -89,7 +89,7 @@ export default function SignIn() {
         flexGrow: 1,
       }}
     >
-      <SafeAreaView edges={["bottom"]} className="flex-1">
+      <SafeAreaView className="flex-1">
         <View className="flex-1 p-6 gap-20">
           <View className="flex-1 justify-center gap-12">
             <View className="items-center">

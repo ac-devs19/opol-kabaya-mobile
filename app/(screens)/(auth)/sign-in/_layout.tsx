@@ -33,6 +33,13 @@ export default function SignInLayout() {
         headerShadowVisible: false,
         title: "",
       }}
-    />
+    >
+      <Stack.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack>
   );
 }
