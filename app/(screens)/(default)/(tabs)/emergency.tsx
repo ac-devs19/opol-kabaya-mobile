@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 import {
   Ambulance,
   Copy,
   Flame,
-  Hospital,
   Phone,
   Shield,
   Zap,
@@ -13,7 +11,6 @@ import {
 import {
   Alert,
   Linking,
-  Platform,
   ScrollView,
   TouchableOpacity,
   View,
@@ -55,51 +52,70 @@ const hotlines = [
 ];
 
 export default function Emergency() {
-  const handleCall = async (phoneNumber: string) => {
-    const formattedNumber = phoneNumber.replace(/\s+/g, "");
-    const url = `tel:${formattedNumber}`;
-
+  const handleCopy = async (phoneNumber: string) => {
     try {
-      const supported = await Linking.canOpenURL(url);
+      await Clipboard.setStringAsync(phoneNumber);
 
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        Alert.alert(
-          "Unable to Call",
-          "Calling is not supported on this device.",
-        );
-      }
-    } catch {
       Alert.alert(
-        "Unable to Call",
-        "An error occurred while trying to make the call.",
+        "Number Copied",
+        `${phoneNumber} has been copied to your clipboard.`,
+      );
+    } catch (error) {
+      console.error("Copy error:", error);
+
+      Alert.alert(
+        "Unable to Copy",
+        "An error occurred while copying the phone number.",
       );
     }
   };
 
-  const handleCopy = async (phoneNumber: string) => {
-    await Clipboard.setStringAsync(phoneNumber);
+  const handleCall = async (phoneNumber: string) => {
+    const formattedNumber = phoneNumber.replace(/\s+/g, "").replace(/-/g, "");
 
-    Alert.alert(
-      "Number Copied",
-      `${phoneNumber} has been copied to your clipboard.`,
-    );
+    const phoneUrl = `tel:${formattedNumber}`;
+
+    try {
+      await Linking.openURL(phoneUrl);
+    } catch (error) {
+      console.error("Unable to open dialer:", error);
+
+      Alert.alert(
+        "Unable to Call",
+        "The phone application could not be opened.",
+        [
+          {
+            text: "Copy Number",
+            onPress: () => handleCopy(phoneNumber),
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ],
+      );
+    }
   };
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: 120 }}
+      contentContainerStyle={{
+        paddingBottom: 120,
+      }}
     >
       <SafeAreaView className="flex-1">
-        <View className="p-6 gap-6">
+        <View className="gap-6 p-6">
+          {/* Header */}
           <View className="gap-1">
             <Text className="font-quicksand-bold text-2xl">Emergency</Text>
+
             <Text className="font-quicksand-medium text-sm text-muted-foreground">
               Quick access to emergency hotlines
             </Text>
           </View>
+
+          {/* Emergency Banner */}
           <View className="overflow-hidden rounded-3xl bg-destructive">
             <View className="flex-row items-center p-5">
               <View className="mr-4 size-12 items-center justify-center rounded-full bg-white/15">
@@ -110,22 +126,29 @@ export default function Emergency() {
                   className="text-white"
                 />
               </View>
+
               <View className="flex-1">
                 <Text className="font-quicksand-bold text-base text-white">
                   Need immediate help?
                 </Text>
+
                 <Text className="mt-1 font-quicksand-medium text-xs leading-5 text-white/80">
                   Contact the appropriate emergency service below.
                 </Text>
               </View>
             </View>
           </View>
+
+          {/* Contacts Title */}
           <View className="gap-1">
             <Text className="font-quicksand-bold text-lg">Contacts</Text>
+
             <Text className="font-quicksand-medium text-xs text-muted-foreground">
-              Tap Call Now to contact a service
+              Tap Call to contact an emergency service
             </Text>
           </View>
+
+          {/* Hotline Cards */}
           <View className="gap-4">
             {hotlines.map((hotline, hotlineIndex) => {
               const HotlineIcon = hotline.icon;
@@ -135,6 +158,7 @@ export default function Emergency() {
                   key={hotlineIndex}
                   className="overflow-hidden rounded-3xl border border-border bg-card"
                 >
+                  {/* Hotline Header */}
                   <View className="flex-row items-center px-4 pt-4">
                     <View className="size-11 items-center justify-center rounded-2xl bg-primary/10">
                       <Icon
@@ -144,19 +168,23 @@ export default function Emergency() {
                         className="text-primary"
                       />
                     </View>
+
                     <View className="ml-3 flex-1">
                       <Text className="font-quicksand-bold text-base">
                         {hotline.name}
                       </Text>
+
                       <Text className="mt-0.5 font-quicksand-medium text-xs text-muted-foreground">
                         {hotline.description}
                       </Text>
                     </View>
                   </View>
+
+                  {/* Phone Numbers */}
                   <View className="px-4 pb-4 pt-4">
                     {hotline.numbers.map((number, numberIndex) => (
                       <View
-                        key={numberIndex}
+                        key={`${number}-${numberIndex}`}
                         className={
                           numberIndex > 0
                             ? "mt-3 border-t border-border pt-3"
@@ -164,14 +192,18 @@ export default function Emergency() {
                         }
                       >
                         <View className="flex-row items-center">
+                          {/* Number */}
                           <View className="flex-1">
                             <Text className="font-quicksand-bold text-lg tracking-wide">
                               {number}
                             </Text>
+
                             <Text className="mt-0.5 font-quicksand-medium text-[11px] text-muted-foreground">
                               Emergency hotline
                             </Text>
                           </View>
+
+                          {/* Copy Button */}
                           <TouchableOpacity
                             activeOpacity={0.7}
                             onPress={() => handleCopy(number)}
@@ -184,6 +216,8 @@ export default function Emergency() {
                               className="text-foreground"
                             />
                           </TouchableOpacity>
+
+                          {/* Call Button */}
                           <TouchableOpacity
                             activeOpacity={0.8}
                             onPress={() => handleCall(number)}
@@ -195,6 +229,7 @@ export default function Emergency() {
                               strokeWidth={2}
                               className="text-primary-foreground"
                             />
+
                             <Text className="ml-2 font-quicksand-bold text-xs text-primary-foreground">
                               Call
                             </Text>
@@ -207,6 +242,8 @@ export default function Emergency() {
               );
             })}
           </View>
+
+          {/* Information */}
           <View className="flex-row items-start rounded-2xl bg-secondary p-4">
             <Icon
               as={Phone}
@@ -214,6 +251,7 @@ export default function Emergency() {
               strokeWidth={1.8}
               className="mt-0.5 text-muted-foreground"
             />
+
             <Text className="ml-3 flex-1 font-quicksand-medium text-xs leading-5 text-muted-foreground">
               Use emergency numbers only when assistance is needed. Keep your
               phone available for return calls from responders.
