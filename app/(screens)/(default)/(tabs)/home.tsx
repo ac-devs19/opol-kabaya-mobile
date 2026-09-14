@@ -163,6 +163,20 @@ export default function Home() {
         />
       }
     >
+      <View
+        className="absolute overflow-hidden"
+        style={{
+          width,
+          height: width * (1152 / 2048),
+        }}
+      >
+        <Image
+          source={require("@/assets/images/kabaya/hero-bg.png")}
+          className="size-full"
+          resizeMode="cover"
+        />
+        <View className="absolute inset-0 bg-white/10" />
+      </View>
       <SafeAreaView className="flex-1">
         <View className="gap-8">
           <View className="px-6 pt-6 flex-row justify-between items-center">
@@ -171,7 +185,7 @@ export default function Home() {
               onPress={() => router.push("/home/notification")}
               variant="secondary"
               size="icon"
-              className="size-12 rounded-2xl bg-orange-600/10 items-center justify-center"
+              className="size-12 rounded-2xl bg-secondary items-center justify-center"
             >
               <Icon
                 as={Bell}
@@ -329,7 +343,9 @@ export default function Home() {
                     strokeWidth={1.5}
                     className="mr-2 text-primary"
                   />
-                  <Text className="font-quicksand-bold text-xl">Services</Text>
+                  <Text className="font-quicksand-bold text-xl">
+                    Municipal Services
+                  </Text>
                 </View>
                 <Text className="mt-1 font-quicksand-medium text-xs text-muted-foreground">
                   Access Kabaya services and systems
