@@ -335,7 +335,6 @@ export default function Personal() {
           <Button
             label="Continue"
             onPress={handleSubmit(onSubmit)}
-            loading={processing}
             disabled={processing}
           />
 

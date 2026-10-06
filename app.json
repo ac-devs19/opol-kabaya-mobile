@@ -2,7 +2,7 @@
   "expo": {
     "name": "Kabaya",
     "slug": "kabaya",
-    "version": "1.2.8",
+    "version": "1.3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "kabaya",
@@ -11,7 +11,8 @@
     "ios": {
       "supportsTablet": false,
       "infoPlist": {
-        "UIDesignRequiresCompatibility": true
+        "UIDesignRequiresCompatibility": true,
+        "ITSAppUsesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.ac.kabaya"
     },

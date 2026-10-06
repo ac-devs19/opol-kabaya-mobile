@@ -9,14 +9,16 @@ import { Button as Btn } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import {
   CheckCircle2,
-  ChevronRight,
   MapPin,
   SquarePen,
   UserRound,
 } from "lucide-react-native";
+import { startDiditVerification } from "@/services/verification";
+import { useState } from "react";
 
 export default function CheckInformation() {
-  const { user } = useAuth();
+  const { user, getUser } = useAuth();
+  const [processing, setProcessing] = useState(false);
 
   const formatBirthDate = (date?: Date | string | null) => {
     if (!date) return "N/A";
@@ -32,6 +34,20 @@ export default function CheckInformation() {
       day: "numeric",
       year: "numeric",
     }).format(parsedDate);
+  };
+
+  const handleVerify = async () => {
+    try {
+      setProcessing(true);
+      await startDiditVerification();
+      router.dismissAll();
+      router.back();
+      await getUser();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setProcessing(false);
+    }
   };
 
   return (
@@ -207,7 +223,8 @@ export default function CheckInformation() {
 
             <Button
               label="Everything Looks Good"
-              onPress={() => router.push("/home/verifications/identification")}
+              onPress={handleVerify}
+              disabled={processing}
             />
           </View>
         </View>

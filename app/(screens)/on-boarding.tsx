@@ -8,7 +8,6 @@ import {
   ShieldCheck,
 } from "lucide-react-native";
 import { Onboarding, OnboardingStep } from "@/components/bna/onboarding";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const steps: OnboardingStep[] = [
   {

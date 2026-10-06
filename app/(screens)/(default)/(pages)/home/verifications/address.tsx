@@ -300,7 +300,6 @@ export default function Address() {
           <Button
             label="Continue"
             onPress={handleSubmit(onSubmit)}
-            loading={processing}
             disabled={processing}
           />
           <Text className="mt-3 text-center font-quicksand-regular text-xs text-muted-foreground">

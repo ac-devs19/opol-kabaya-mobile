@@ -34,9 +34,9 @@ export default function Account() {
               <View className="size-[112px] items-center justify-center rounded-full bg-secondary">
                 <Image
                   source={
-                    user?.latest_verification?.face_image
+                    user?.profile_picture
                       ? {
-                          uri: `https://lh3.googleusercontent.com/d/${user.latest_verification.face_image}`,
+                          uri: `https://lh3.googleusercontent.com/d/${user.profile_picture}`,
                         }
                       : require("@/assets/images/kabaya/user.png")
                   }
