@@ -225,15 +225,15 @@ export default function Home() {
             </View>
           </View>
           {user?.is_verified !== 1 &&
-            user?.latest_verification?.status !== "approved" && (
+            user?.latest_verification?.status !== "Approved" && (
               <View className="px-6">
                 <View
                   className={cn(
                     "overflow-hidden rounded-2xl border",
 
-                    user?.latest_verification?.status === "pending"
+                    user?.latest_verification?.status === "In Progress"
                       ? "border-blue-200 bg-blue-50 dark:border-blue-900/40 dark:bg-blue-950/20"
-                      : user?.latest_verification?.status === "rejected"
+                      : user?.latest_verification?.status === "Declined"
                         ? "border-red-200 bg-red-50 dark:border-red-900/40 dark:bg-red-950/20"
                         : "border-orange-200 bg-orange-50 dark:border-orange-900/40 dark:bg-orange-950/20",
                   )}
@@ -243,9 +243,9 @@ export default function Home() {
                       className={cn(
                         "size-11 items-center justify-center rounded-2xl",
 
-                        user?.latest_verification?.status === "pending"
+                        user?.latest_verification?.status === "In Progress"
                           ? "bg-blue-100 dark:bg-blue-900/40"
-                          : user?.latest_verification?.status === "rejected"
+                          : user?.latest_verification?.status === "Declined"
                             ? "bg-red-100 dark:bg-red-900/40"
                             : "bg-orange-100 dark:bg-orange-900/40",
                       )}
@@ -255,19 +255,19 @@ export default function Home() {
                         size={21}
                         strokeWidth={1.8}
                         className={cn(
-                          user?.latest_verification?.status === "pending"
+                          user?.latest_verification?.status === "In Progress"
                             ? "text-blue-600 dark:text-blue-400"
-                            : user?.latest_verification?.status === "rejected"
+                            : user?.latest_verification?.status === "Declined"
                               ? "text-red-600 dark:text-red-400"
                               : "text-orange-600 dark:text-orange-400",
                         )}
                       />
                     </View>
                     <View className="ml-3 flex-1 pr-3">
-                      {user?.latest_verification?.status === "pending" ? (
+                      {user?.latest_verification?.status === "In Progress" ? (
                         <>
                           <Text className="font-quicksand-bold text-sm text-blue-950 dark:text-blue-100">
-                            Verification pending
+                            Verification in progress
                           </Text>
 
                           <Text className="mt-0.5 font-quicksand-medium text-[11px] leading-4 text-blue-800/70 dark:text-blue-200/70">
@@ -275,7 +275,7 @@ export default function Home() {
                             notify you once the review is complete.
                           </Text>
                         </>
-                      ) : user?.latest_verification?.status === "rejected" ? (
+                      ) : user?.latest_verification?.status === "Declined" ? (
                         <>
                           <Text className="font-quicksand-bold text-sm text-red-950 dark:text-red-100">
                             Verification unsuccessful
@@ -299,7 +299,7 @@ export default function Home() {
                         </>
                       )}
                     </View>
-                    {user?.latest_verification?.status !== "pending" && (
+                    {user?.latest_verification?.status !== "In Progress" && (
                       <Pressable
                         onPress={() =>
                           router.push("/home/verifications/personal")
@@ -307,13 +307,13 @@ export default function Home() {
                         className={cn(
                           "rounded-full px-3.5 py-2 active:opacity-80",
 
-                          user?.latest_verification?.status === "rejected"
+                          user?.latest_verification?.status === "Declined"
                             ? "bg-red-500 active:bg-red-600"
                             : "bg-orange-500 active:bg-orange-600",
                         )}
                       >
                         <Text className="font-quicksand-bold text-[11px] text-white">
-                          {user?.latest_verification?.status === "rejected"
+                          {user?.latest_verification?.status === "Declined"
                             ? "Try Again"
                             : "Verify"}
                         </Text>

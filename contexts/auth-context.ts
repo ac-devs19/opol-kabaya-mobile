@@ -22,7 +22,7 @@ interface UserVerification {
   id_front_image: string | null;
   id_back_image: string | null;
   face_image: string | null;
-  status: "pending" | "approved" | "rejected";
+  status: "In Progress" | "Approved" | "Declined";
 }
 
 interface User {
