@@ -34,6 +34,13 @@ export default function VerificationLayout() {
         headerTitle: "",
         headerShadowVisible: false,
       }}
-    />
+    >
+      <Stack.Screen
+        name="didit"
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack>
   );
 }

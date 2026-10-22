@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/ui/text";
@@ -17,7 +17,7 @@ import { startDiditVerification } from "@/services/verification";
 import { useState } from "react";
 
 export default function CheckInformation() {
-  const { user, getUser } = useAuth();
+  const { user } = useAuth();
   const [processing, setProcessing] = useState(false);
 
   const formatBirthDate = (date?: Date | string | null) => {
@@ -39,12 +39,20 @@ export default function CheckInformation() {
   const handleVerify = async () => {
     try {
       setProcessing(true);
-      await startDiditVerification();
-      router.dismissAll();
-      router.back();
-      await getUser();
+
+      const sessionUrl = await startDiditVerification();
+
+      router.push({
+        pathname: "/home/verifications/didit",
+        params: { sessionUrl },
+      });
     } catch (error) {
-      console.log(error);
+      console.error("Failed to start Didit verification:", error);
+
+      Alert.alert(
+        "Verification Error",
+        "Unable to start identity verification. Please try again.",
+      );
     } finally {
       setProcessing(false);
     }
